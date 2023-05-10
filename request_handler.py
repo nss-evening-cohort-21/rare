@@ -1,8 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views import create_user, login_user, get_all_users, get_all_comments, get_all_categories, get_single_category
-from views import get_all_comments
+from views import create_user, login_user, get_all_users
+from views import get_all_comments, get_single_user
+from views import get_all_categories, get_single_category
+
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
