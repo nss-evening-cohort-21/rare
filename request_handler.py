@@ -1,8 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views import get_all_comments
-from views.user_requests import create_user, login_user
+from views import create_user, login_user, get_all_users, get_all_comments
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -26,6 +25,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             except (IndexError, ValueError):
                 pass
             return (resource, id)
+      
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
@@ -62,10 +62,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             ( resource, id ) = parsed
-
+            
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                
+                else:    
+                    response = get_all_users()
+                    
             if resource == "comments":
                 response = get_all_comments()
+                
+        else: # There is a ? in the path, run the query param functions
+            (resource, query) = parsed
+            
         self.wfile.write(json.dumps(response).encode())
+
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -80,7 +92,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'register':
             response = create_user(post_body)
 
-        self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
