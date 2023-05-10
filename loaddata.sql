@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
 CREATE TABLE "Comments" (
@@ -88,3 +88,36 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+
+INSERT INTO Categories ('label') VALUES ('Opinion');
+INSERT INTO Categories ('label') VALUES ('Random');
+
+INSERT INTO Users VALUES (null, 'Ryan', 'Bigelow', 'ryan@nss.com', 'yadda yadda', 'ryan', 'password', 'image.com', null, null);
+INSERT INTO Users VALUES (null, 'Allison', 'Blumenthal', 'allison@nss.com', 'blah blah blah', 'allison', '123cookie', 'picture.com', null, null);
+INSERT INTO Users VALUES (null, 'Erin', 'Stephens', 'erin@nss.com', 'ok', 'erin', 'trickortreat', 'photo.com', null, null);
+INSERT INTO Users VALUES (null, 'DeDe', 'Hill', 'deandre@nss.com', 'yea na, na na yea', 'dede', 'motomotomoto', 'moto.com', null, null);
+
+INSERT INTO Subscriptions VALUES (null, 1, 2, CURRENT_DATE);
+INSERT INTO Subscriptions VALUES (null, 2, 3, CURRENT_DATE);
+INSERT INTO Subscriptions VALUES (null, 3, 4, CURRENT_DATE);
+INSERT INTO Subscriptions VALUES (null, 4, 1, CURRENT_DATE);
+
+
+INSERT INTO Posts VALUES (null, 1, 1, 'Job Growth In Tech', CURRENT_DATE, 'image.com', 'news', true);
+INSERT INTO Posts VALUES (null, 2, 2, 'NSS Is Great', CURRENT_DATE, 'nss.com', 'info', true);
+INSERT INTO Posts VALUES (null, 3, 3, 'I cannot see my forehead', CURRENT_DATE, 'damn.com', 'shower thoughts', true);
+INSERT INTO Posts VALUES (null, 4, 1, 'New Developments in AI', CURRENT_DATE, 'news.com', 'news', true);
+
+INSERT INTO Comments VALUES (null, 1, 2, 'Great news!');
+INSERT INTO Comments VALUES (null, 2, 3, 'tru');
+INSERT INTO Comments VALUES (null, 3, 4, 'wait yeah...');
+INSERT INTO Comments VALUES (null, 4, 1, 'Uh oh!');
+
+INSERT INTO Tags VALUES (null, 'Education');
+INSERT INTO Tags VALUES (null, 'Random');
+INSERT INTO Tags VALUES (null, 'AI');
+
+INSERT INTO PostTags VALUES (null, 1, 1);
+INSERT INTO PostTags VALUES (null, 2, 2);
+INSERT INTO PostTags VALUES (null, 3, 3);
+INSERT INTO PostTags VALUES (null, 4, 4);
