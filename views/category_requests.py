@@ -3,7 +3,7 @@ from models import Category
 
 
 def get_single_category(id):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -11,7 +11,7 @@ def get_single_category(id):
         SELECT
             c.id,
             c.label
-        FROM category c
+        FROM Categories c
         WHERE c.id = ?
         """, ( id, ))
 
@@ -25,7 +25,7 @@ def get_single_category(id):
 
 def get_all_categories():
     # Open a connection to the database
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
 
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
@@ -36,7 +36,7 @@ def get_all_categories():
         SELECT
             c.id,
             c.label
-        FROM Category c
+        FROM Categories c
         """)
 
         # Initialize an empty list to hold all category representations
@@ -56,11 +56,11 @@ def get_all_categories():
     return categories
 
 def create_category(new_category):
-    with sqlite3.connect("./kennel.sqlite3") as conn:
+    with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Category
+        INSERT INTO Categories
             ( label )
         VALUES
             ( ? );

@@ -121,3 +121,4 @@ INSERT INTO PostTags VALUES (null, 1, 1);
 INSERT INTO PostTags VALUES (null, 2, 2);
 INSERT INTO PostTags VALUES (null, 3, 3);
 INSERT INTO PostTags VALUES (null, 4, 4);
+
