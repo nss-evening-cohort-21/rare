@@ -57,16 +57,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
 
         # Parse URL and store entire tuple in a variable
-        parsed = self.parse_url(self.path)
+        parsed = self.parse_url()
 
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             ( resource, id ) = parsed
             
             if resource == "comments":
-                if id is not None:
-                    response = ""
-                else: response = get_all_comments()
+                response = get_all_comments()
 
     def do_POST(self):
         """Make a post request to the server"""
