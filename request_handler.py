@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-
+from views import get_all_comments
 from views.user_requests import create_user, login_user
 
 
@@ -57,11 +57,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
 
         # Parse URL and store entire tuple in a variable
-        parsed = self.parse_url(self.path)
+        parsed = self.parse_url()
 
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             ( resource, id ) = parsed
+
+            if resource == "comments":
+                response = get_all_comments()
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
