@@ -3,7 +3,7 @@ import json
 from urllib.parse import urlparse, parse_qs
 
 from views.user import create_user, login_user
-
+from views import get_all_comments
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -62,6 +62,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             ( resource, id ) = parsed
+            
+            if resource == "comments":
+                if id is not None:
+                    response = ""
+                else: response = get_all_comments()
 
     def do_POST(self):
         """Make a post request to the server"""
