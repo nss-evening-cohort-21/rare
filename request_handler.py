@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
 
-from views.user_requests import create_user, login_user
+from views.user_requests import create_user, login_user, get_all_users
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -62,8 +62,17 @@ class HandleRequests(BaseHTTPRequestHandler):
         if '?' not in self.path:
             ( resource, id ) = parsed
             
+            if resource == 'users':
+                if id is not None:
+                    response = get_single_user(id)
+                    
+                else:
+                    response = get_all_users()
+            
         else: # There is a ? in the path, run the query param functions
                 (resource, query) = parsed
+                
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
