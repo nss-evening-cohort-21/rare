@@ -72,7 +72,7 @@ def create_user(user):
         })
 
 def get_all_users():
-    with sqlite3.connect("./simply_books.sqlite3") as conn:
+    with sqlite3.connect('./db.sqlite3') as conn:
     
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -89,7 +89,7 @@ def get_all_users():
             u.profile_image_url,
             u.created_on,
             u.active
-        FROM users u
+        FROM Users u
         """)
         
         users = []
@@ -98,7 +98,7 @@ def get_all_users():
         
         for row in dataset:
         
-            user = User(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile-image_url'], row['created_on'], row['active'])
+            user = User(row['id'], row['first_name'], row['last_name'], row['email'], row['bio'], row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
             
             users.append(user.__dict__)
         

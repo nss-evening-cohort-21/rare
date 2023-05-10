@@ -7,22 +7,24 @@ from views import create_user, login_user, get_all_users, get_all_comments
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self, path):
+    def parse_url(self):
         """Parse the url into the resource and id"""
-        parsed_url = urlparse(path)
-        path_params = parsed_url.path.split('/')  # ['', 'users', 1]
+        path_params = self.path.split('/')
         resource = path_params[1]
-        
-        if parsed_url.query:
-            query = parse_qs(parsed_url.query)
-            return (resource, query)
-
-        pk = None
-        try:
-            pk = int(path_params[2])
-        except (IndexError, ValueError):
-            pass
-        return (resource, pk)
+        if '?' in resource:
+            param = resource.split('?')[1]
+            resource = resource.split('?')[0]
+            pair = param.split('=')
+            key = pair[0]
+            value = pair[1]
+            return (resource, key, value)
+        else:
+            id = None
+            try:
+                id = int(path_params[2])
+            except (IndexError, ValueError):
+                pass
+            return (resource, id)
       
 
     def _set_headers(self, status):
@@ -61,36 +63,29 @@ class HandleRequests(BaseHTTPRequestHandler):
         if '?' not in self.path:
             ( resource, id ) = parsed
             
-            if resource == 'users':
+            if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
-                    
-                else:
+                
+                else:    
                     response = get_all_users()
                     
             if resource == "comments":
                 response = get_all_comments()
-            
-        else: # There is a ? in the path, run the query param functions
-                (resource, query) = parsed
                 
+        else: # There is a ? in the path, run the query param functions
+            (resource, query) = parsed
+            
         self.wfile.write(json.dumps(response).encode())
 
-
-            
 
     def do_POST(self):
         """Make a post request to the server"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
-        
-        post_body = self.rfile.read(content_len)
-        
-        # Convert JSON string to a Python dictionary
-        post_body = json.loads(post_body)
-        
-        # Parse the URL
-        (resource, id) = self.parse_url(self.path)
+        post_body = json.loads(self.rfile.read(content_len))
+        response = ''
+        resource, _ = self.parse_url()
 
         if resource == 'login':
             response = login_user(post_body)
