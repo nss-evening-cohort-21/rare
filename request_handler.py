@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views import create_user, login_user, get_all_users, get_all_comments, get_all_categories
+from views import create_user, login_user, get_all_users, get_all_comments, get_all_categories, get_single_category
 from views import get_all_comments
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -65,19 +65,23 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
-                
+
                 else:    
                     response = get_all_users()
                     
             if resource == "comments":
                 response = get_all_comments()
                 
+            if resource == "categories":
+                if id is not None:
+                    response = get_single_category(id)
+                    
+                else:
+                    response = get_all_categories()
+                
         else: # There is a ? in the path, run the query param functions
             (resource, query) = parsed
-            
-                
-            if resource == "categories":
-                response = get_all_categories()
+
         self.wfile.write(json.dumps(response).encode())
 
 
