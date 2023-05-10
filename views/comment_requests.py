@@ -10,10 +10,10 @@ def get_all_comments():
         db_cursor.execute("""
         SELECT
             c.id,
-            c.author_ud,
+            c.author_id,
             c.post_id,
             c.content
-        FROM Comment c
+        FROM Comments c
         """)
 
         comments = []

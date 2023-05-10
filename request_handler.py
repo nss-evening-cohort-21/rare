@@ -62,9 +62,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
             ( resource, id ) = parsed
-            
+
             if resource == "comments":
                 response = get_all_comments()
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""
