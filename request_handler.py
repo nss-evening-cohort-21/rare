@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views import create_user, login_user, get_all_users, get_all_comments
+from views import create_user, login_user, get_all_users, get_all_comments, get_single_user
 
 
 class HandleRequests(BaseHTTPRequestHandler):
