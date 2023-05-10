@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from urllib.parse import urlparse, parse_qs
-from views import create_user, login_user, get_all_users, get_all_comments, get_single_user
+from views import create_user, login_user, get_all_users, get_all_comments, get_single_user, create_comment
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -91,6 +91,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = login_user(post_body)
         if resource == 'register':
             response = create_user(post_body)
+        if resource == "comments":
+            response = create_comment(post_body)
 
         self.wfile.write(json.dumps(response).encode())
 
