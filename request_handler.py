@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import create_user, login_user, get_all_users
-from views import get_all_comments, get_single_user, create_comment
+from views import get_all_comments, get_single_user, create_comment, delete_comment
 from views import get_all_categories, get_single_category, create_category
 from views import get_all_posts
 
@@ -119,7 +119,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        pass
+        self._set_headers(204)
+        
+        (resource, id) = self.parse_url()
+        
+        if resource == "comments":
+            delete_comment(id)
+        self.wfile.write("".encode())
 
 
 def main():
