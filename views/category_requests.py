@@ -64,7 +64,7 @@ def create_category(new_category):
             ( label )
         VALUES
             ( ? );
-        """, (new_category['label']))
+        """, (new_category['label'],))
 
         # The `lastrowid` property on the cursor will return
         # the primary key of the last thing that got added to
