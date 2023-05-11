@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import create_user, login_user, get_all_users
 from views import get_all_comments, get_single_user, create_comment, delete_comment
-from views import get_all_categories, get_single_category
+from views import get_all_categories, get_single_category, create_category
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -67,7 +67,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 if id is not None:
                     response = get_single_user(id)
 
-                else:    
+                else:
                     response = get_all_users()
                     
             if resource == "comments":
@@ -100,6 +100,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == "comments":
             response = create_comment(post_body)
+        if resource == "categories":
+            response = create_category(post_body)
 
         self.wfile.write(json.dumps(response).encode())
 
