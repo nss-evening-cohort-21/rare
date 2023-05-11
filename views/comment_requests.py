@@ -41,3 +41,13 @@ def create_comment(new_comment):
         id = db_cursor.lastrowid
         new_comment['id'] = id
     return new_comment
+
+def delete_comment(id):
+    '''deletes comment'''
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        
+        db_cursor.execute("""
+        DELETE FROM comments
+        WHERE id = ?
+        """, (id, ))
