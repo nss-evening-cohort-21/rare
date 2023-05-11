@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from views import create_user, login_user, get_all_users
-from views import get_all_comments, get_single_user, create_comment, delete_comment
+from views import create_user, login_user, get_all_users, get_single_user, search_user_by_first_name
+from views import get_all_comments, create_comment, delete_comment
 from views import get_all_categories, get_single_category, create_category
 
 class HandleRequests(BaseHTTPRequestHandler):
