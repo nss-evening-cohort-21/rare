@@ -6,7 +6,7 @@ from views import get_all_comments, create_comment, delete_comment, update_comme
 from views import get_all_categories, get_single_category, create_category
 from views import get_all_posts, get_single_post, create_post, delete_post
 from views import get_all_tags, create_tag, get_single_tag
-from views import get_post_by_user
+from views import get_post_by_user, get_post_by_title
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -102,6 +102,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = search_user_by_first_name(query['first_name'][0])
             if query.get('user_id') and resource == 'posts':
                 response = get_post_by_user(query['user_id'][0])
+            if query.get('title') and resource == 'posts':
+                response = get_post_by_title(query['title'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
