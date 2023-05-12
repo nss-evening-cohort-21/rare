@@ -7,6 +7,7 @@ from views import get_all_categories, get_single_category, create_category
 from views import get_all_posts, get_single_post, create_post, delete_post, update_post, search_post_by_category
 from views import get_all_tags, create_tag, get_single_tag
 from views import get_post_by_user, get_post_by_title
+from views import get_all_subscriptions, create_subscription, delete_subscription
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -94,6 +95,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
                 else:
                     response = get_all_tags()
+                    
+            if resource == "subscriptions":
+                    response = get_all_subscriptions()
 
         else:  # There is a ? in the path, run the query param functions
             (resource, query) = parsed
@@ -132,6 +136,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_post(post_body)
         if resource == "tags":
             response = create_tag(post_body)
+        if resource == "subscriptions":
+            response = create_subscription(post_body)
 
         self.wfile.write(json.dumps(response).encode())
 
@@ -168,6 +174,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             
         if resource == "posts":
             delete_post(id)
+            
+        if resource == "subscriptions":
+            delete_subscription(id)
             
         self.wfile.write("".encode())
 

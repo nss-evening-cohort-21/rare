@@ -125,16 +125,4 @@ INSERT INTO PostTags VALUES (null, 4, 4);
 
 -- test selects
 
-SELECT
-    u.id, 
-    u.first_name, 
-    u.last_name,
-    u.email, 
-    u.bio,
-    u.username,
-    u.password,
-    u.profile_image_url,
-    u.created_on,
-    u.active
-FROM Users u
-WHERE u.first_name LIKE '%al%'
+
