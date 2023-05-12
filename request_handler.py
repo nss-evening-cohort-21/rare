@@ -4,8 +4,8 @@ import json
 from views import create_user, login_user, get_all_users, get_single_user, search_user_by_first_name
 from views import get_all_comments, create_comment, delete_comment, update_comment
 from views import get_all_categories, get_single_category, create_category
+from views import get_all_posts, get_single_post
 from views import get_all_tags
-
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -79,6 +79,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
                 else:
                     response = get_all_categories()
+                    
+            if resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                    
+                else:
+                    response = get_all_posts()
 
             if resource == "tags":
                 response = get_all_tags()
