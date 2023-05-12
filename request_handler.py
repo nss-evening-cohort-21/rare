@@ -4,7 +4,7 @@ import json
 from views import create_user, login_user, get_all_users, get_single_user, search_user_by_first_name
 from views import get_all_comments, create_comment, delete_comment, update_comment
 from views import get_all_categories, get_single_category, create_category
-from views import get_all_posts, get_single_post, create_post, delete_post, update_post
+from views import get_all_posts, get_single_post, create_post, delete_post, update_post, search_post_by_category
 from views import get_all_tags, create_tag, get_single_tag
 
 
@@ -100,6 +100,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             
             if query.get('first_name') and resource == 'users':
                 response = search_user_by_first_name(query['first_name'][0])
+                
+            if query.get('category_id') and resource == 'posts':
+                response = search_post_by_category(query['category_id'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
