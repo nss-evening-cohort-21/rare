@@ -58,3 +58,24 @@ def create_tag(new_tag):
         new_tag['id'] = id
 
     return new_tag
+
+def get_single_tag(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            t.id,
+            t.label
+        FROM Tags t
+        WHERE t.id = ?
+        """, ( id, ))
+
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an tag instance from the current row
+        tag = Tag(data['id'], data['label'])
+
+        return tag.__dict__
