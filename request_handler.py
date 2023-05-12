@@ -3,6 +3,8 @@ import json
 from views import create_user, login_user, get_all_users
 from views import get_all_comments, get_single_user, create_comment
 from views import get_all_categories, get_single_category
+from views import get_all_tags
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -25,7 +27,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             except (IndexError, ValueError):
                 pass
             return (resource, id)
-      
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
@@ -61,30 +62,32 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
-            ( resource, id ) = parsed
-            
+            (resource, id) = parsed
+
             if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
 
-                else:    
+                else:
                     response = get_all_users()
-                    
+
             if resource == "comments":
                 response = get_all_comments()
-                
+
             if resource == "categories":
                 if id is not None:
                     response = get_single_category(id)
-                    
+
                 else:
                     response = get_all_categories()
-                
-        else: # There is a ? in the path, run the query param functions
+
+            if resource == "tags":
+                response = get_all_tags()
+
+        else:  # There is a ? in the path, run the query param functions
             (resource, query) = parsed
 
         self.wfile.write(json.dumps(response).encode())
-
 
     def do_POST(self):
         """Make a post request to the server"""
