@@ -124,7 +124,8 @@ INSERT INTO PostTags VALUES (null, 4, 4);
 
 
 -- test selects
-SELECT 
+
+SELECT
     u.id, 
     u.first_name, 
     u.last_name,
@@ -136,5 +137,4 @@ SELECT
     u.created_on,
     u.active
 FROM Users u
-
-SELECT * FROM sqlite_master;
+WHERE u.first_name LIKE '%al%'

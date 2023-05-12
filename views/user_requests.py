@@ -174,7 +174,7 @@ def search_user_by_first_name(first_name):
             u.created_on,
             u.active
         FROM Users u
-        WHERE u.first_name = ?
+        WHERE u.first_name LIKE ?
         """, ( first_name, ))
         
         users = []
