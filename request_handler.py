@@ -2,8 +2,10 @@ from urllib.parse import urlparse, parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import create_user, login_user, get_all_users, get_single_user, search_user_by_first_name
-from views import get_all_comments, create_comment, delete_comment
+from views import get_all_comments, create_comment, delete_comment, update_comment
 from views import get_all_categories, get_single_category, create_category
+from views import get_all_tags
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -59,33 +61,35 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         # If the path does not include a query parameter, continue with the original if block
         if '?' not in self.path:
-            ( resource, id ) = parsed
-            
+            (resource, id) = parsed
+
             if resource == "users":
                 if id is not None:
                     response = get_single_user(id)
 
                 else:
                     response = get_all_users()
-                    
+
             if resource == "comments":
                 response = get_all_comments()
-                
+
             if resource == "categories":
                 if id is not None:
                     response = get_single_category(id)
-                    
+
                 else:
                     response = get_all_categories()
-                
-        else: # There is a ? in the path, run the query param functions
+
+            if resource == "tags":
+                response = get_all_tags()
+
+        else:  # There is a ? in the path, run the query param functions
             (resource, query) = parsed
             
             if query.get('first_name') and resource == 'users':
                 response = search_user_by_first_name(query['first_name'][0])
 
         self.wfile.write(json.dumps(response).encode())
-
 
     def do_POST(self):
         """Make a post request to the server"""
@@ -108,7 +112,20 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+        
+        (resource, id) = self.parse_url()
+        success = False
+        
+        if resource == "comments":
+            update_comment(id, post_body)
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
