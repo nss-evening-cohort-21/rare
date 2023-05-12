@@ -4,7 +4,7 @@ import json
 from views import create_user, login_user, get_all_users, get_single_user, search_user_by_first_name
 from views import get_all_comments, create_comment, delete_comment, update_comment
 from views import get_all_categories, get_single_category, create_category
-from views import get_all_posts, get_single_post, delete_post
+from views import get_all_posts, get_single_post, create_post, delete_post
 from views import get_all_tags, create_tag, get_single_tag
 
 
@@ -119,6 +119,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_comment(post_body)
         if resource == "categories":
             response = create_category(post_body)
+        if resource == "posts":
+            response = create_post(post_body)
         if resource == "tags":
             response = create_tag(post_body)
 
