@@ -7,7 +7,7 @@ from views import get_all_categories, get_single_category, create_category
 from views import get_all_posts, get_single_post, create_post, delete_post, update_post, search_post_by_category
 from views import get_all_tags, create_tag, get_single_tag
 from views import get_post_by_user, get_post_by_title
-from views import get_all_subscriptions, create_subscription, delete_subscription
+from views import get_all_subscriptions, create_subscription, delete_subscription, get_all_subscription_posts
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -113,6 +113,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if query.get('title') and resource == 'posts':
                 response = get_post_by_title(query['title'][0])
+                
+            if query.get('follower_id') and resource == 'subscriptions':
+                response = get_all_subscription_posts(query['follower_id']['author_id'][0])
 
         self.wfile.write(json.dumps(response).encode())
 
