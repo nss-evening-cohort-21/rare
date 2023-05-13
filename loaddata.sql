@@ -26,9 +26,12 @@ CREATE TABLE "Subscriptions" (
   "follower_id" INTEGER,
   "author_id" INTEGER,
   "created_on" date,
+  "post_id" INTEGER NOT NULL,
   FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
-  FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
+  FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
 );
+
 
 CREATE TABLE "Posts" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +67,7 @@ CREATE TABLE "PostReactions" (
   "post_id" INTEGER,
   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
   FOREIGN KEY(`reaction_id`) REFERENCES `Reactions`(`id`),
-  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
+  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`user_id`)
 );
 
 CREATE TABLE "Tags" (
@@ -105,16 +108,21 @@ INSERT INTO Users VALUES (null, 'Allison', 'Blumenthal', 'allison@nss.com', 'bla
 INSERT INTO Users VALUES (null, 'Erin', 'Stephens', 'erin@nss.com', 'ok', 'erin', 'trickortreat', 'photo.com', null, null);
 INSERT INTO Users VALUES (null, 'DeDe', 'Hill', 'deandre@nss.com', 'yea na, na na yea', 'dede', 'motomotomoto', 'moto.com', null, null);
 
-INSERT INTO Subscriptions VALUES (null, 1, 2, CURRENT_DATE);
-INSERT INTO Subscriptions VALUES (null, 2, 3, CURRENT_DATE);
-INSERT INTO Subscriptions VALUES (null, 3, 4, CURRENT_DATE);
-INSERT INTO Subscriptions VALUES (null, 4, 1, CURRENT_DATE);
+INSERT INTO Subscriptions VALUES (null, 1, 2, CURRENT_DATE, 1);
+INSERT INTO Subscriptions VALUES (null, 2, 3, CURRENT_DATE, 2);
+INSERT INTO Subscriptions VALUES (null, 3, 4, CURRENT_DATE, 2);
+INSERT INTO Subscriptions VALUES (null, 4, 1, CURRENT_DATE, 1);
 
 
 INSERT INTO Posts VALUES (null, 1, 1, 'Job Growth In Tech', CURRENT_DATE, 'image.com', 'news', true);
 INSERT INTO Posts VALUES (null, 2, 2, 'NSS Is Great', CURRENT_DATE, 'nss.com', 'info', true);
 INSERT INTO Posts VALUES (null, 3, 3, 'I cannot see my forehead', CURRENT_DATE, 'damn.com', 'shower thoughts', true);
 INSERT INTO Posts VALUES (null, 4, 1, 'New Developments in AI', CURRENT_DATE, 'news.com', 'news', true);
+INSERT INTO Posts VALUES (null, 1, 1, 'Test 1', CURRENT_DATE, 'image.com', 'news', true);
+INSERT INTO Posts VALUES (null, 2, 2, 'Test 2', CURRENT_DATE, 'nss.com', 'info', true);
+INSERT INTO Posts VALUES (null, 3, 3, 'Test 3', CURRENT_DATE, 'damn.com', 'shower thoughts', true);
+INSERT INTO Posts VALUES (null, 4, 1, 'Test 4', CURRENT_DATE, 'news.com', 'news', true);
+
 
 INSERT INTO Comments VALUES (null, 1, 2, 'Great news!');
 INSERT INTO Comments VALUES (null, 2, 3, 'tru');
@@ -132,26 +140,32 @@ INSERT INTO PostTags VALUES (null, 4, 4);
 
 INSERT INTO SubscriptionPosts VALUES (null, 1, 1);
 INSERT INTO SubscriptionPosts VALUES (null, 2, 2);
+INSERT INTO SubscriptionPosts VALUES (null, 1, 3);
+
 
 
 -- test selects
 
-SELECT 
-    sp.id,
-    sp.subscription_id,
-    sp.post_id,
+SELECT
+    s.author_id
+FROM Subscriptions s
+WHERE s.follower_id = 1
+
+
+SELECT
+    s.id,
     s.follower_id,
     s.author_id,
     s.created_on,
-    p.user_id,
-    p.category_id,
-    p.title,
-    p.publication_date,
-    p.image_url,
-    p.content,
-    p.approved
-FROM SubscriptionPosts sp
-JOIN subscriptions s
-      ON s.id = sp.subscription_id
-JOIN posts p
-      ON p.id = sp.post_id
+    s.post_id subscription_post_id,
+    p.id post_id,
+    p.user_id post_user_id,
+    p.category_id post_category_id,
+    p.title post_title,
+    p.publication_date post_publication_date,
+    p.image_url post_image_url,
+    p.content post_content,
+    p.approved post_approved
+FROM Subscriptions s
+JOIN Posts p 
+ON p.user_id = s.author_id
