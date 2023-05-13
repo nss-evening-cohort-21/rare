@@ -78,18 +78,20 @@ def get_subscriptions_by_follower_id(follower_id):
     """, ( follower_id, ))
     
     follower_subscriptions = []
+    subscription_posts = []
+    
     dataset = db_cursor.fetchall()
     
     for row in dataset:
       subscription = Subscription(row['id'], row['follower_id'], row['author_id'], row['created_on'], row['post_id'])
       
-      follower_subscriptions.append(subscription.__dict__)
-      
       subscription_author_id = subscription.author_id
-     
-      subscription_posts = get_post_by_user(subscription_author_id)
       
-      follower_subscriptions.posts.append(subscription_posts.__dict__)
+      subscription_posts.append(get_post_by_user(subscription_author_id))
+        
+      subscription.post = subscription_posts
+      
+      follower_subscriptions.append(subscription.__dict__)
        
   return follower_subscriptions
 
