@@ -141,31 +141,3 @@ INSERT INTO PostTags VALUES (null, 4, 4);
 INSERT INTO SubscriptionPosts VALUES (null, 1, 1);
 INSERT INTO SubscriptionPosts VALUES (null, 2, 2);
 INSERT INTO SubscriptionPosts VALUES (null, 1, 3);
-
-
-
--- test selects
-
-SELECT
-    s.author_id
-FROM Subscriptions s
-WHERE s.follower_id = 1
-
-
-SELECT
-    s.id,
-    s.follower_id,
-    s.author_id,
-    s.created_on,
-    s.post_id subscription_post_id,
-    p.id post_id,
-    p.user_id post_user_id,
-    p.category_id post_category_id,
-    p.title post_title,
-    p.publication_date post_publication_date,
-    p.image_url post_image_url,
-    p.content post_content,
-    p.approved post_approved
-FROM Subscriptions s
-JOIN Posts p 
-ON p.user_id = s.author_id
