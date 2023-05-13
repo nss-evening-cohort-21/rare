@@ -20,7 +20,6 @@ CREATE TABLE "DemotionQueue" (
   PRIMARY KEY (action, admin_id, approver_one_id)
 );
 
-
 CREATE TABLE "Subscriptions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "follower_id" INTEGER,
@@ -31,7 +30,6 @@ CREATE TABLE "Subscriptions" (
   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`),
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
 );
-
 
 CREATE TABLE "Posts" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,14 +86,6 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
-CREATE TABLE "SubscriptionPosts" (
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "subscription_id" INTEGER,
-  "post_id" INTEGER,
-  FOREIGN KEY(`subscription_id`) REFERENCES `Subscriptions`(`id`),
-  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
-);
-
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
@@ -137,7 +127,3 @@ INSERT INTO PostTags VALUES (null, 1, 1);
 INSERT INTO PostTags VALUES (null, 2, 2);
 INSERT INTO PostTags VALUES (null, 3, 3);
 INSERT INTO PostTags VALUES (null, 4, 4);
-
-INSERT INTO SubscriptionPosts VALUES (null, 1, 1);
-INSERT INTO SubscriptionPosts VALUES (null, 2, 2);
-INSERT INTO SubscriptionPosts VALUES (null, 1, 3);

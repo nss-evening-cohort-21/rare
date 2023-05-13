@@ -14,7 +14,8 @@ def get_all_subscriptions():
         s.id,
         s.follower_id,
         s.author_id,
-        s.created_on
+        s.created_on,
+        s.post_id
     FROM Subscriptions s
     """)
 
@@ -23,7 +24,7 @@ def get_all_subscriptions():
     dataset = db_cursor.fetchall()
 
     for row in dataset:
-        subscription = Subscription(row['id'], row['follower_id'], row['author_id'], row['created_on'], row[''])
+        subscription = Subscription(row['id'], row['follower_id'], row['author_id'], row['created_on'], row['post_id'])
 
         subscriptions.append(subscription.__dict__)
 
