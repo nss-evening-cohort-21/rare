@@ -31,6 +31,9 @@ CREATE TABLE "Subscriptions" (
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
 );
 
+ALTER TABLE "Subscriptions"
+  RENAME TO "fake_subscriptions"
+
 CREATE TABLE "Posts" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "user_id" INTEGER,
