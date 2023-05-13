@@ -85,6 +85,14 @@ CREATE TABLE "Categories" (
   "label" varchar
 );
 
+CREATE TABLE "SubscriptionPosts" (
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "subscription_id" INTEGER,
+  "post_id" INTEGER,
+  FOREIGN KEY(`subscription_id`) REFERENCES `Subscriptions`(`id`),
+  FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`)
+);
+
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
@@ -122,7 +130,28 @@ INSERT INTO PostTags VALUES (null, 2, 2);
 INSERT INTO PostTags VALUES (null, 3, 3);
 INSERT INTO PostTags VALUES (null, 4, 4);
 
+INSERT INTO SubscriptionPosts VALUES (null, 1, 1);
+INSERT INTO SubscriptionPosts VALUES (null, 2, 2);
+
 
 -- test selects
 
-
+SELECT 
+    sp.id,
+    sp.subscription_id,
+    sp.post_id,
+    s.follower_id,
+    s.author_id,
+    s.created_on,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved
+FROM SubscriptionPosts sp
+JOIN subscriptions s
+      ON s.id = sp.subscription_id
+JOIN posts p
+      ON p.id = sp.post_id
