@@ -39,10 +39,10 @@ def create_subscription(new_subscription):
       
       db_cursor.execute("""
       INSERT INTO Subscriptions
-          ( follower_id, author_id, created_on )
+          ( follower_id, author_id, created_on, post_id )
       VALUES
-          ( ?, ?, ?);
-      """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], ))
+          ( ?, ?, ?, ?);
+      """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], new_subscription['post_id'],))
       
       id = db_cursor.lastrowid
   
